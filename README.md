@@ -22,6 +22,8 @@ ENGR101 2017 Team 3 Wednesday 12 pm AVC. All of our code and other related thing
 - [ ] Test out configurations
 - [ ] Complete quadrant 1
 
+[Hardware Plan](#HardwarePlanWeek1)
+
 ## Week 3 
 ### Checklist
 - [ ] Follow line/ navigate without crashing 
