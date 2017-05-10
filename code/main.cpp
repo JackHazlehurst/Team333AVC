@@ -5,7 +5,7 @@
 //will get a row of pixels from the camera 
 int camera(int row, int numCols){
 	take_picture();
-	display_picture(1,0);
+	//display_picture(0,10);
 	char pixelLine[numCols];
 	for(int i = 0; i < numCols; i++){
 		//gets the pixel and makes it white or black
@@ -29,7 +29,11 @@ int camera(int row, int numCols){
 			numWhite++;
 		}
 	}
-	return total/numWhite;
+	if(numWhite != 0){
+		return total/numWhite;
+	}
+	//TODO need to figure out a number to return if there are no white pixels
+	return 0;
 }
 
 //makes the robot move 
@@ -46,6 +50,9 @@ int move(){
 
 int main(){
 	init();//initialises the hardware
-	printf("Average white pixel position %d\n", camera(160, 320));
-	move();
+	while(true){
+	int pixelError = camera(160, 320);
+		printf("%d\n", pixelError);
+		sleep1(0,200);
+	}
 }
