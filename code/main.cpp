@@ -34,22 +34,28 @@ int pixelLine(int row){
 			numWhite++;
 		}
 	}
-	if(numWhite != 0){
+	if(numWhite > 4){
 		return total/numWhite;
 	}
-	//TODO need to figure out a number to return if there are no white pixels
-	return 0;
+	//If there are no white pixels
+	return 10000;
 }
 
 //makes the robot move
 //accepts the ideal speed, error, and scaling factor as a arguments
 void move(int speed, int error, double factor){
-	//calculates speed for each wheel
-	int leftSpeed = speed + (int)((double)error*factor);
-	int rightSpeed = speed - (int)((double)error*factor);
-	//sets speed for each wheel
-	set_motor(1, leftSpeed);
-	set_motor(2, rightSpeed);
+	if(error == 10000){//backwards
+		set_motor(1, -25);
+		set_motor(2, -35);
+	}
+	else{
+		//calculates speed for each wheel
+		int leftSpeed = speed - (int)((double)error*factor);
+		int rightSpeed = speed + (int)((double)error*factor);
+		//sets speed for each wheel
+		set_motor(1, leftSpeed);
+		set_motor(2, rightSpeed);
+	}
 	sleep1(0, 12500);//80 Hz
 }
 
@@ -58,8 +64,8 @@ int main(){
 	//Infinite loop for running the robot
 	while(true){
 		int error = pixelLine(160);
-		move(35, error, -0.35);
+		move(35, error, 0.33);
 		
-		printf("%d\n", error);
+		//printf("%d\n", error);
 	}
 }
