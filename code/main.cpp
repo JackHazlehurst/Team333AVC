@@ -23,7 +23,7 @@ int pixelLine(int row){
 		}
 		pixelLine[i] = pixel;
 	}
-	//display_picture(1, 0);
+	display_picture(1, 0);
     //printf("\n");
     //calculates the average white pixel index relative to the center collumn 
     int total = 0;
@@ -33,6 +33,9 @@ int pixelLine(int row){
 			total = total + pixelLine[j] * (j - (WIDTH/2));
 			numWhite++;
 		}
+	}
+	if(numWhite > 300){//if all white pixels
+			return 10001;
 	}
 	if(numWhite > 4){
 		return total/numWhite;
@@ -77,11 +80,20 @@ int pixelCol(int col){
 			numWhite++;
 		}
 	}
-	if(numWhite > 4){
-		return total/numWhite;
-	}
-	//If there are no white pixels
-	return 10000;
+	return numWhite;
+}
+
+void turnLeft(){
+	set_motor(1, 25);
+	set_motor(2, 40);
+	sleep1(0.5, 0);
+	
+	int error = pixelLine(160);
+		while(error > 3){
+			set_motor(1, 25);
+			set_motor(2, 40);
+			error = pixelLine(160);
+		}
 }
 
 /**
@@ -117,12 +129,26 @@ void gate(){
 int main(){
 	init();//initialises the hardware
 	//Infinite loop for running the robot
+	gate();
 	while(true){
 		take_picture();
-		pixelCol(60);
 		int error = pixelLine(160);
-		move(35, error, 0.30);
+		move(35, error, 0.3);
+		
+		if(error == 10001){
+				break;
+		}
 		
 		//printf("%d\n", error);
+	}
+	//quadrant 3
+	while(true){
+		take_picture();
+		int error = pixelLine(160);
+		move(35, error, 0.33);
+		//turn left
+		if(error == 10001){
+				turnLeft();
+		}
 	}
 }
