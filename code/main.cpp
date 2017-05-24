@@ -2,13 +2,13 @@
 #include <time.h>
 #include "E101.h" //ENGR101 library
 
-//will get a row of pixels from the camera
-//accepts the row in the image it needs to look at
+/**
+ * will get a row of pixels from the camera
+ * accepts the row in the image it needs to look at 
+ */
 int pixelLine(int row){
 	int THRESHOLD = 100;
 	int WIDTH = 320;
-	take_picture();
-	//display_picture(0,10);
 	char pixelLine[WIDTH];
 	for(int i = 0; i < WIDTH; i++){
 		//gets the pixel and makes it white or black
@@ -41,8 +41,53 @@ int pixelLine(int row){
 	return 10000;
 }
 
-//makes the robot move
-//accepts the ideal speed, error, and scaling factor as a arguments
+/**
+ * will get a collumn of pixels from the camera
+ * accepts the collumn in the image it needs to look at 
+ */
+int pixelCol(int col){
+	
+	display_picture(1, 0);
+	
+	
+	int THRESHOLD = 100;
+	int HEIGHT = 240;
+	char pixelLine[HEIGHT];
+	for(int i = 0; i < HEIGHT; i++){
+		//gets the pixel and makes it white or black
+		int pixel = get_pixel(i, col, 3);
+		if(pixel < THRESHOLD){//black
+			pixel = 0;
+			set_pixel(i, col, 1, 1, 1);
+		}
+		else{//white
+			pixel = 1;
+			set_pixel(i, col, 255, 255, 255);
+		}
+		pixelLine[i] = pixel;
+	}
+	//display_picture(1, 0);
+    //printf("\n");
+    //calculates the average white pixel index relative to the center collumn 
+    int total = 0;
+    int numWhite = 0;
+    for(int j = 0; j < HEIGHT; j++){
+		if(pixelLine[j] == 1){
+			total = total + pixelLine[j] * (j - (HEIGHT/2));
+			numWhite++;
+		}
+	}
+	if(numWhite > 4){
+		return total/numWhite;
+	}
+	//If there are no white pixels
+	return 10000;
+}
+
+/**
+ * makes the robot move
+ * accepts the ideal speed, error, and scaling factor as a arguments
+*/
 void move(int speed, int error, double factor){
 	if(error == 10000){//backwards
 		set_motor(1, -25);
@@ -63,6 +108,8 @@ int main(){
 	init();//initialises the hardware
 	//Infinite loop for running the robot
 	while(true){
+		take_picture();
+		pixelCol(60);
 		int error = pixelLine(160);
 		move(35, error, 0.33);
 		
