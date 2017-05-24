@@ -47,7 +47,7 @@ int pixelLine(int row){
  */
 int pixelCol(int col){
 	
-	display_picture(1, 0);
+	//display_picture(1, 0);
 	
 	
 	int THRESHOLD = 100;
@@ -91,7 +91,7 @@ int pixelCol(int col){
 void move(int speed, int error, double factor){
 	if(error == 10000){//backwards
 		set_motor(1, -25);
-		set_motor(2, -35);
+		set_motor(2, -40);
 	}
 	else{
 		//calculates speed for each wheel
@@ -104,6 +104,16 @@ void move(int speed, int error, double factor){
 	sleep1(0, 12500);//80 Hz
 }
 
+void gate(){
+	char server_addr[15]={'1','3','0','.','1','9','5','.','6','.','1','9','6'};
+	connect_to_server(server_addr,1024);
+	char message[24]={'P','l','e','a','s','e'};
+	send_to_server(message);
+	receive_from_server(message);
+	send_to_server(message);
+	printf("%s", message);
+}
+
 int main(){
 	init();//initialises the hardware
 	//Infinite loop for running the robot
@@ -111,7 +121,7 @@ int main(){
 		take_picture();
 		pixelCol(60);
 		int error = pixelLine(160);
-		move(35, error, 0.33);
+		move(35, error, 0.30);
 		
 		//printf("%d\n", error);
 	}
