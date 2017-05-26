@@ -7,7 +7,7 @@
  * accepts the row in the image it needs to look at 
  */
 int pixelLine(int row){
-	int THRESHOLD = 100;
+	int THRESHOLD = 110;
 	int WIDTH = 320;
 	char pixelLine[WIDTH];
 	for(int i = 0; i < WIDTH; i++){
@@ -42,6 +42,20 @@ int pixelLine(int row){
 	}
 	//If there are no white pixels
 	return 10000;
+}
+
+int averageError(){
+	int total = 0;
+	int count = 0;
+	
+	for(int i = 140; i < 181; i = i + 5){
+		total += pixelLine(i);
+		count++;
+	}
+	
+	total /= count;
+	display_picture(1, 0);
+	return total;
 }
 
 /**
@@ -88,14 +102,12 @@ int pixelCol(int col){
 */
 void turnLeft(){
 	int error = pixelLine(160);
-		while(error > 25 || error < -25){
-			set_motor(1, 30);
+		while(error > 80 || error < -80){
+			set_motor(1, -40);
 			set_motor(2, 40);
 			error = pixelLine(160);
+			sleep1(0, 12500);
 		}
-	printf("Finished turning left");
-	//set_motor(1,0);
-	//set_motor(2,0);
 }
 
 /**
@@ -104,7 +116,7 @@ void turnLeft(){
 */
 void move(int speed, int error, double factor){
 	if(error == 10000){//backwards
-		set_motor(1, -25);
+		set_motor(1, -30);
 		set_motor(2, -40);
 	}
 	else{
@@ -125,13 +137,6 @@ void gate(){
 	send_to_server(message);
 	receive_from_server(message);
 	send_to_server(message);
-	/*
-	set_motor(1, 50);
-	set_motor(2, 50);
-	sleep1(2, 0);
-	set_motor(1, 0);
-	set_motor(2, 0);
-	*/
 }
 
 int main(){
@@ -140,7 +145,8 @@ int main(){
 	gate();
 	while(true){
 		take_picture();
-		int error = pixelLine(160);
+		int error = averageError();
+		printf("%d\n", error);
 		if(error < 254 && error > -254 || error == 10000){
 			move(35, error, 0.3);
 		}
@@ -151,27 +157,28 @@ int main(){
 		if(error == 10001){
 			break;
 		}
-		
-		printf("%d\n", error);
 	}
 	printf("Quadrant 3\n");
 	sleep1(0, 200000);
+	sleep1(10, 0);
 	//quadrant 3
 	while(true){
-		printf("Q3");
 		take_picture();
-		int error = pixelLine(160);
+		int error = averageError();
+		printf("%d\n", error);
 		if(error < 254 && error > -254 || error == 10000){
 			move(35, error, 0.3);
 		}
 		else{
 			printf("Speed");
 		}
-		
-		//turn left
+
 		if(error == 10001){
-			printf("Turing left...");
+			printf("Turning left...");
+			fflush(stdout);
 			turnLeft();
+			printf("Finished turning");
+			fflush(stdout);
 		}
 		printf("%d\n", error);
 	}
