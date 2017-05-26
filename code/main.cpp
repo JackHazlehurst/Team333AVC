@@ -83,19 +83,19 @@ int pixelCol(int col){
 	return numWhite;
 }
 
+/**
+* Makes the robot turn left until it has the white line in the center again
+*/
 void turnLeft(){
-	set_motor(1, 25);
-	set_motor(2, 40);
-	sleep1(0.05, 0);
-	
 	int error = pixelLine(160);
-		while(error > 15){
-			set_motor(1, 25);
+		while(error > 25 || error < -25){
+			set_motor(1, 30);
 			set_motor(2, 40);
 			error = pixelLine(160);
 		}
-	set_motor(1,0);
-	set_motor(2,0);
+	printf("Finished turning left");
+	//set_motor(1,0);
+	//set_motor(2,0);
 }
 
 /**
@@ -128,7 +128,7 @@ void gate(){
 	/*
 	set_motor(1, 50);
 	set_motor(2, 50);
-	sleep1(2, 0);//80 Hz
+	sleep1(2, 0);
 	set_motor(1, 0);
 	set_motor(2, 0);
 	*/
@@ -141,34 +141,38 @@ int main(){
 	while(true){
 		take_picture();
 		int error = pixelLine(160);
-		if(error < 254 && error > -254){
+		if(error < 254 && error > -254 || error == 10000){
 			move(35, error, 0.3);
 		}
 		else{
-			printf("Speed out of range\n");
+			printf("Speed\n");
 		}
 		
 		if(error == 10001){
-				break;
+			break;
 		}
 		
-		//printf("%d\n", error);
+		printf("%d\n", error);
 	}
 	printf("Quadrant 3\n");
+	sleep1(0, 200000);
 	//quadrant 3
 	while(true){
+		printf("Q3");
 		take_picture();
 		int error = pixelLine(160);
-		if(error < 254 && error > -254){
+		if(error < 254 && error > -254 || error == 10000){
 			move(35, error, 0.3);
 		}
 		else{
-			printf("Speed out of range\n");
+			printf("Speed");
 		}
 		
 		//turn left
 		if(error == 10001){
-				turnLeft();
+			printf("Turing left...");
+			turnLeft();
 		}
+		printf("%d\n", error);
 	}
 }
