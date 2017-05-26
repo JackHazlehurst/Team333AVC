@@ -141,7 +141,12 @@ int main(){
 	while(true){
 		take_picture();
 		int error = pixelLine(160);
-		move(35, error, 0.3);
+		if(error < 254 && error > -254){
+			move(35, error, 0.3);
+		}
+		else{
+			printf("Speed out of range\n");
+		}
 		
 		if(error == 10001){
 				break;
@@ -154,7 +159,13 @@ int main(){
 	while(true){
 		take_picture();
 		int error = pixelLine(160);
-		move(35, error, 0.33);
+		if(error < 254 && error > -254){
+			move(35, error, 0.3);
+		}
+		else{
+			printf("Speed out of range\n");
+		}
+		
 		//turn left
 		if(error == 10001){
 				turnLeft();
