@@ -34,28 +34,34 @@ int pixelLine(int row){
 			numWhite++;
 		}
 	}
-	if(numWhite > 300){//if all white pixels
-			return 10001;
-	}
 	if(numWhite > 4){
 		return total/numWhite;
 	}
 	//If there are no white pixels
 	return 10000;
 }
-
+/**
+ * Takes an average of multiple lines to get more reliable data
+ */ 
 int averageError(){
 	int total = 0;
 	int count = 0;
 	
-	for(int i = 140; i < 181; i = i + 5){
-		total += pixelLine(i);
-		count++;
+	for(int i = 140; i < 181; i = i + 10){
+		int error = pixelLine(i);
+		if(error < 255){
+			total += pixelLine(i);
+			count++;
+		}
 	}
-	
-	total /= count;
-	display_picture(1, 0);
-	return total;
+	//display_picture(1, 0);
+	if(count == 0){//no white
+		return 10000;
+	}
+        if(total/count > 200){//all white
+                return 10001;
+        }
+        return total/count;
 }
 
 /**
@@ -67,7 +73,7 @@ int pixelCol(int col){
 	//display_picture(1, 0);
 	
 	
-	int THRESHOLD = 100;
+	int THRESHOLD = 125;
 	int HEIGHT = 240;
 	char pixelLine[HEIGHT];
 	for(int i = 0; i < HEIGHT; i++){
@@ -130,6 +136,9 @@ void move(int speed, int error, double factor){
 	sleep1(0, 12500);//80 Hz
 }
 
+/**
+* opens the gate at the start of the maze
+*/
 void gate(){
 	char server_addr[15]={'1','3','0','.','1','9','5','.','6','.','1','9','6'};
 	connect_to_server(server_addr,1024);
