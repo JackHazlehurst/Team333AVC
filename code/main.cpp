@@ -23,7 +23,7 @@ int pixelLine(int row){
 		}
 		pixelLine[i] = pixel;
 	}
-	display_picture(1, 0);
+	//display_picture(1, 0);
     //printf("\n");
     //calculates the average white pixel index relative to the center collumn 
     int total = 0;
@@ -86,14 +86,16 @@ int pixelCol(int col){
 void turnLeft(){
 	set_motor(1, 25);
 	set_motor(2, 40);
-	sleep1(0.5, 0);
+	sleep1(0.05, 0);
 	
 	int error = pixelLine(160);
-		while(error > 3){
+		while(error > 15){
 			set_motor(1, 25);
 			set_motor(2, 40);
 			error = pixelLine(160);
 		}
+	set_motor(1,0);
+	set_motor(2,0);
 }
 
 /**
@@ -123,7 +125,13 @@ void gate(){
 	send_to_server(message);
 	receive_from_server(message);
 	send_to_server(message);
-	printf("%s", message);
+	/*
+	set_motor(1, 50);
+	set_motor(2, 50);
+	sleep1(2, 0);//80 Hz
+	set_motor(1, 0);
+	set_motor(2, 0);
+	*/
 }
 
 int main(){
@@ -141,6 +149,7 @@ int main(){
 		
 		//printf("%d\n", error);
 	}
+	printf("Quadrant 3\n");
 	//quadrant 3
 	while(true){
 		take_picture();
