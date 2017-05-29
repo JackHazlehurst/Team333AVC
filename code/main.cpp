@@ -7,7 +7,7 @@
  * accepts the row in the image it needs to look at 
  */
 int pixelLine(int row){
-	int THRESHOLD = 110;
+	int THRESHOLD = 100;
 	int WIDTH = 320;
 	char pixelLine[WIDTH];
 	for(int i = 0; i < WIDTH; i++){
@@ -23,7 +23,7 @@ int pixelLine(int row){
 		}
 		pixelLine[i] = pixel;
 	}
-	//display_picture(1, 0);
+	display_picture(1, 0);
     //printf("\n");
     //calculates the average white pixel index relative to the center collumn 
     int total = 0;
@@ -34,34 +34,14 @@ int pixelLine(int row){
 			numWhite++;
 		}
 	}
+	if(numWhite > 300){//if all white pixels
+			return 10001;
+	}
 	if(numWhite > 4){
 		return total/numWhite;
 	}
 	//If there are no white pixels
 	return 10000;
-}
-/**
- * Takes an average of multiple lines to get more reliable data
- */ 
-int averageError(){
-	int total = 0;
-	int count = 0;
-	
-	for(int i = 140; i < 181; i = i + 10){
-		int error = pixelLine(i);
-		if(error < 255){
-			total += pixelLine(i);
-			count++;
-		}
-	}
-	//display_picture(1, 0);
-	if(count == 0){//no white
-		return 10000;
-	}
-        if(total/count > 120){//all white
-                return 10001;
-        }
-        return total/count;
 }
 
 /**
@@ -73,7 +53,7 @@ int pixelCol(int col){
 	//display_picture(1, 0);
 	
 	
-	int THRESHOLD = 125;
+	int THRESHOLD = 100;
 	int HEIGHT = 240;
 	char pixelLine[HEIGHT];
 	for(int i = 0; i < HEIGHT; i++){
@@ -103,16 +83,16 @@ int pixelCol(int col){
 	return numWhite;
 }
 
-/**
-* Makes the robot turn left until it has the white line in the center again
-*/
 void turnLeft(){
+	set_motor(1, 25);
+	set_motor(2, 40);
+	sleep1(0.5, 0);
+	
 	int error = pixelLine(160);
-		while(error > 80 || error < -80){
-			set_motor(1, -40);
+		while(error > 3){
+			set_motor(1, 25);
 			set_motor(2, 40);
 			error = pixelLine(160);
-			sleep1(0, 12500);
 		}
 }
 
@@ -122,7 +102,7 @@ void turnLeft(){
 */
 void move(int speed, int error, double factor){
 	if(error == 10000){//backwards
-		set_motor(1, -30);
+		set_motor(1, -25);
 		set_motor(2, -40);
 	}
 	else{
@@ -136,9 +116,6 @@ void move(int speed, int error, double factor){
 	sleep1(0, 12500);//80 Hz
 }
 
-/**
-* opens the gate at the start of the maze
-*/
 void gate(){
 	char server_addr[15]={'1','3','0','.','1','9','5','.','6','.','1','9','6'};
 	connect_to_server(server_addr,1024);
@@ -146,6 +123,7 @@ void gate(){
 	send_to_server(message);
 	receive_from_server(message);
 	send_to_server(message);
+	printf("%s", message);
 }
 
 int main(){
@@ -154,43 +132,23 @@ int main(){
 	gate();
 	while(true){
 		take_picture();
-		int error = averageError();
-		printf("%d\n", error);
-		if(error < 254 && error > -254 || error == 10000){
-			move(35, error, 0.3);
-		}
-		else{
-			printf("Speed\n");
-		}
+		int error = pixelLine(160);
+		move(35, error, 0.3);
 		
 		if(error == 10001){
-			break;
+				break;
 		}
+		
+		//printf("%d\n", error);
 	}
-	printf("Quadrant 3\n");
-	sleep1(0, 200000);
-	set_motor(1, 0);
-	set_motor(2, 0);
-	sleep1(10, 0);
 	//quadrant 3
 	while(true){
 		take_picture();
-		int error = averageError();
-		printf("%d\n", error);
-		if((error < 254 && error > -254) || error == 10000){
-			move(35, error, 0.3);
-		}
-		else{
-			printf("Speed");
-		}
-
+		int error = pixelLine(160);
+		move(35, error, 0.33);
+		//turn left
 		if(error == 10001){
-			printf("Turning left...");
-			fflush(stdout);
-			turnLeft();
-			printf("Finished turning");
-			fflush(stdout);
+				turnLeft();
 		}
-		printf("%d\n", error);
 	}
 }
