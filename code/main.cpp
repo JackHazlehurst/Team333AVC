@@ -58,7 +58,7 @@ int averageError(){
 	if(count == 0){//no white
 		return 10000;
 	}
-        if(total/count > 200){//all white
+        if(total/count > 120){//all white
                 return 10001;
         }
         return total/count;
@@ -169,13 +169,15 @@ int main(){
 	}
 	printf("Quadrant 3\n");
 	sleep1(0, 200000);
+	set_motor(1, 0);
+	set_motor(2, 0);
 	sleep1(10, 0);
 	//quadrant 3
 	while(true){
 		take_picture();
 		int error = averageError();
 		printf("%d\n", error);
-		if(error < 254 && error > -254 || error == 10000){
+		if((error < 254 && error > -254) || error == 10000){
 			move(35, error, 0.3);
 		}
 		else{
