@@ -1,5 +1,5 @@
 # Team333AVC
-ENGR101 2017 Team 3 Wednesday 12 pm AVC. All of our code and other related things for this project will go in here. 
+ENGR101 2017 Team 3 Wednesday 12 pm AVC. All of our code and anything else needed for this project will go in here. 
 
 ## Week 1
 ### Checklist
@@ -10,7 +10,7 @@ ENGR101 2017 Team 3 Wednesday 12 pm AVC. All of our code and other related thing
 - [x] Decide which sensors to use and for what
 
 ### Review
-* Need to still do this
+* Need to still do thisother related things
 
 ## Week 2 
 ### Checklist
