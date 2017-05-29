@@ -21,14 +21,16 @@ ENGR101 2017 Team 3 Wednesday 12 pm AVC. All of our code and other related thing
 - [x] Undercarriage attached so wheels can be applied
 - [x] Test out configurations
 - [x] Complete quadrant 1
-
+### Review
+* Need to still do this
 [Hardware Plan](HardwarePlanWeek1)
 
 ## Week 3 
 ### Checklist
 - [x] Follow line/ navigate without crashing 
 - [x] Complete quadrant 2
-
+### Review
+* Need to still do this
 ## Week 4 
 ### Checklist
 - [ ] Complete quadrant 3 and 4
