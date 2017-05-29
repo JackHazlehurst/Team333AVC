@@ -3,31 +3,31 @@ ENGR101 2017 Team 3 Wednesday 12 pm AVC. All of our code and other related thing
 
 ## Week 1
 ### Checklist
-- [ ] Overall plan for software and hardware
-- [ ] Make camera work
-- [ ] Github up
-- [ ] Chassis design
-- [ ] Decide which sensors to use and for what
+- [x] Overall plan for software and hardware
+- [x] Make camera work
+- [x] Github up
+- [x] Chassis design
+- [x] Decide which sensors to use and for what
 
 ### Review
 * Need to still do this
 
 ## Week 2 
 ### Checklist
-- [ ] AVC has to move
-- [ ] Complete code for car to move
-- [ ] Complete code for camera
-- [ ] Get chassis
-- [ ] Undercarriage attached so wheels can be applied
-- [ ] Test out configurations
-- [ ] Complete quadrant 1
+- [x] AVC has to move
+- [x] Complete code for car to move
+- [x] Complete code for camera
+- [x] Get chassis
+- [x] Undercarriage attached so wheels can be applied
+- [x] Test out configurations
+- [x] Complete quadrant 1
 
 [Hardware Plan](HardwarePlanWeek1)
 
 ## Week 3 
 ### Checklist
-- [ ] Follow line/ navigate without crashing 
-- [ ] Complete quadrant 2
+- [x] Follow line/ navigate without crashing 
+- [x] Complete quadrant 2
 
 ## Week 4 
 ### Checklist
