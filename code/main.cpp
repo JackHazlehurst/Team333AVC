@@ -34,10 +34,11 @@ int pixelLine(int row){
 			numWhite++;
 		}
 	}
-	
+	/*
 	if(numWhite > 300){//if all white pixels
 			return 10001;
 	}
+	*/
 	
 	if(numWhite > 4){
 		return total/numWhite;
@@ -104,8 +105,9 @@ void turnLeft(){
 */
 void move(int speed, int error, double factor){
 	if(error == 10000){//backwards
-		set_motor(1, -35);
-		set_motor(2, -25);
+		set_motor(1, -40);
+		set_motor(2, -30);
+		sleep1(0, 150000);
 	}
 	else{
 		//calculates speed for each wheel
@@ -138,8 +140,8 @@ int main(){
 		move(35, error, 0.15);
 		
 		if(error == 10001){
-				//break; 
-                               printf("Quadrant 3!!!!");
+			//break; 
+                        printf("Quadrant 3!!!!");
 		}
 		
 		//printf("%d\n", error);
